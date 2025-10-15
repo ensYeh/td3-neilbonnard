@@ -38,4 +38,12 @@ public class NomMachine {
     int index = nom.indexOf('.');
     return nom.substring(0, index);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        NomMachine other = (NomMachine) obj;
+        return this.nom.equals(other.nom);
+    }
 }

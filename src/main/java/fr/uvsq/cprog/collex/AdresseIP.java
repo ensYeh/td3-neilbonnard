@@ -29,4 +29,12 @@ public class AdresseIP {
     public String toString(){
         return ip;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;                  
+        if (obj == null || getClass() != obj.getClass()) return false;
+        AdresseIP other = (AdresseIP) obj;
+        return this.ip.equals(other.ip);
+    }
+    
 }
