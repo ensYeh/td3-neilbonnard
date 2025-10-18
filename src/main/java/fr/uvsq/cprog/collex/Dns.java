@@ -69,4 +69,25 @@ public class Dns {
     public Collection<DnsItem> getAllItems() {
         return iPMapDns.values();
     }
+
+    public List<DnsItem> getItems(String domaine) {
+        return iPMapDns.values().stream()
+                .filter(item -> item.getNomMachine().getDomaine().equals(domaine))
+                .sorted((a, b) -> a.getNomMachine().toString()
+                        .compareTo(b.getNomMachine().toString()))
+                .toList();
+    }
+
+    public void addItem(AdresseIP ip, NomMachine nom) {
+        if (iPMapDns.containsKey(ip) || nomMapDns.containsKey(nom)) {
+            throw new IllegalArgumentException("L'element DNS existe deja.");
+        }
+
+        DnsItem entrée = new DnsItem(ip,nom);
+
+        iPMapDns.put(ip, entrée);
+        nomMapDns.put(nom, entrée);
+
+        //ATTENTION PAS TERMINE: RESTE A AJOUTER DANS DNS.TXT
+    }
 }
