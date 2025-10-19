@@ -37,5 +37,6 @@ public class DnsTUI {
     public void affiche(Object res) {
         System.out.println(res);
     }
+    //Reste a faire le main.
 }
 
