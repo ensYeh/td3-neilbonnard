@@ -39,11 +39,16 @@ public class NomMachine {
     return nom.substring(0, index);
     }
 
+   @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;                 // même objet
+        if (!(o instanceof NomMachine)) return false; // mauvais type
+        NomMachine other = (NomMachine) o;
+        return this.nom.equals(other.nom);          // même valeur du nom
+    }
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        NomMachine other = (NomMachine) obj;
-        return this.nom.equals(other.nom);
+    public int hashCode() {
+        return nom.hashCode();                      // délégue au String
     }
 }

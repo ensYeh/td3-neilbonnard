@@ -30,11 +30,16 @@ public class AdresseIP {
         return ip;
     }
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;                  
-        if (obj == null || getClass() != obj.getClass()) return false;
-        AdresseIP other = (AdresseIP) obj;
-        return this.ip.equals(other.ip);
+    public boolean equals(Object o) {
+        if (this == o) return true;              // même objet en mémoire
+        if (!(o instanceof AdresseIP)) return false; // mauvais type
+        AdresseIP other = (AdresseIP) o;
+        return this.ip.equals(other.ip);         // même valeur de String
+    }
+
+    @Override
+    public int hashCode() {
+        return ip.hashCode();                    // même hash que la String
     }
     
 }

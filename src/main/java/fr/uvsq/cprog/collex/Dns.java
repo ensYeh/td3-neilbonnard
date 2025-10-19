@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Properties;
 
 public class Dns {
-    private final Map<AdresseIP, DnsItem> iPMapDns = new HashMap<>();
-    private final Map<NomMachine, DnsItem> nomMapDns = new HashMap<>();
+    private Map<AdresseIP, DnsItem> iPMapDns = new HashMap<>();
+    private Map<NomMachine, DnsItem> nomMapDns = new HashMap<>();
 
     public Dns(){
         try {
@@ -52,6 +52,11 @@ public class Dns {
                 // Remplir les deux maps
                 iPMapDns.put(ip, item);
                 nomMapDns.put(nom, item);
+                for (DnsItem di : iPMapDns.values()) {
+                        System.out.println("Chargé DnsItem : " + di.getIp().toString() + " " + di.getNomMachine().toString());
+                }
+                //System.out.println("Chargé : " + ip.toString());
+                //System.out.println("Chargé : " + nom.toString());
             }
 
         } catch (IOException | URISyntaxException e) {
@@ -88,6 +93,32 @@ public class Dns {
         iPMapDns.put(ip, entrée);
         nomMapDns.put(nom, entrée);
 
-        //ATTENTION PAS TERMINE: RESTE A AJOUTER DANS DNS.TXT
+        try {
+            
+            Properties props = new Properties();
+            try (InputStream in = getClass().getClassLoader().getResourceAsStream("config.properties")) {
+                if (in == null) {
+                    throw new IllegalStateException("config.properties introuvable !");
+                }
+                props.load(new InputStreamReader(in, StandardCharsets.UTF_8));
+            }
+            String fileName = props.getProperty("dns.file");
+            if (fileName == null) {
+                throw new IllegalStateException("dns.file non défini !");
+            }
+
+            // Trouver le chemin vers dns.txt
+            Path path = Path.of(getClass().getClassLoader().getResource(fileName).toURI());
+
+            // Construire le contenu du fichier à partir des items
+            List<String> lines = iPMapDns.values().stream()
+                    .map(item -> item.getIp() + " " + item.getNomMachine())
+                    .toList();
+
+            Files.write(path, lines, StandardCharsets.UTF_8);
+
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la sauvegarde du DNS", e);
+        }
     }
 }
