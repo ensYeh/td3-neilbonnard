@@ -2,6 +2,9 @@ package fr.uvsq.cprog.collex;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.util.Collection;
+import java.util.List;
+
 public class DnsTest {
     @Test
     public void testDnsItemCreation() {
@@ -34,5 +37,36 @@ public class DnsTest {
         DnsItem item = dns.getItem(nom);
         assertNotNull("Le nom machine doit être trouvée", item);
         assertEquals("193.51.31.154", item.getIp().toString());
+    }
+
+    @Test
+    public void testGetAllItems() {
+        Dns dns = new Dns();
+        Collection<DnsItem> items = dns.getAllItems();
+        assertNotNull(items);
+        assertFalse(items.isEmpty());
+    }
+
+    @Test
+    public void testAddItemAndRetrieve() {
+        Dns dns = new Dns();
+        AdresseIP ip = new AdresseIP("10.0.0.1");
+        NomMachine nom = new NomMachine("test.uvsq.fr");
+
+        dns.addItem(ip, nom);
+
+        // Vérifie qu'on peut retrouver l'élément ajouté
+        assertEquals("test.uvsq.fr", dns.getItem(ip).getNomMachine().toString());
+        assertEquals("10.0.0.1", dns.getItem(nom).getIp().toString());
+    }
+
+    @Test
+    public void testGetItemsByDomain() {
+        // suppose que ton fichier contient www.uvsq.fr et ecampus.uvsq.fr
+        Dns dns = new Dns();
+        List<DnsItem> items = dns.getItems("uvsq.fr");
+
+        assertNotNull(items);
+        assertTrue(items.size() >= 2);
     }
 }
