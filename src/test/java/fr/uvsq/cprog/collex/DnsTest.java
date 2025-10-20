@@ -69,4 +69,16 @@ public class DnsTest {
         assertNotNull(items);
         assertTrue(items.size() >= 2);
     }
+
+    @Test
+    public void testCommandeAjouter() {
+        Dns dns = new Dns();
+        AjouterItem cmd = new AjouterItem(dns,
+                new AdresseIP("193.51.25.88"),
+                new NomMachine("cmdtest.uvsq.fr"));
+        cmd.execute();
+
+        assertNotNull(dns.getItem(new AdresseIP("193.51.25.88")));
+    }
+    
 }
